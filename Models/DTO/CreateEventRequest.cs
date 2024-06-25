@@ -10,10 +10,10 @@ namespace LDKProject.Models.DTO
         [Required(ErrorMessage = "Judul Event harus diisi")]
         public string Description { get; set; }
 
+        [DataType(DataType.DateTime)]
         [Required(ErrorMessage = "Tanggal Event harus diisi")]
         public DateTime EventDate { get; set; }
 
-        [DataType(DataType.Date)]
         [Required(ErrorMessage = "Tempat Event harus diisi")]
         public string Location { get; set; }
 

@@ -31,6 +31,26 @@ namespace LDKProject.Controllers
 
         }
 
+        [HttpGet]
+        [Route("GetAllCategoryArticle")]
+        [Authorize]
+        public async Task<IActionResult> GetAllCategoryArticle()
+        {
+            try
+            {
+                var article = await _categoryArticleService.GetAllCategoryArticle();
+                return Ok(Utils.Utils.NewSuccessResponse(article, null, null));
+            }
+            catch (NotFoundException e)
+            {
+                return NotFound(Utils.Utils.NewErrorResponse(null, e.Message, Status.NotFoundErr, (int)HttpStatusCode.NotFound));
+            }
+            catch (Exception)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, "Terjadi kesalahan pada sistem");
+            }
+        }
+
         [HttpPost]
         [Route("CreateCategory")]
         [Authorize]
@@ -68,6 +88,26 @@ namespace LDKProject.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("GetAllArticle")]
+        [Authorize]
+        public async Task<IActionResult> GetAllArticle()
+        {
+            try
+            {
+                var response = await _categoryArticleService.GetAllArticle();
+                return Ok(Utils.Utils.NewSuccessResponse(response, null, null));
+            }
+            catch (NotFoundException e)
+            {
+                return NotFound(Utils.Utils.NewErrorResponse(null, e.Message, Status.NotFoundErr, (int)HttpStatusCode.NotFound));
+            }
+            catch (Exception)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, "Terjadi kesalahan pada sistem");
+            }
+        }
+
         [HttpPost]
         [Route("CreateArticle")]
         [Authorize]
@@ -81,6 +121,62 @@ namespace LDKProject.Controllers
                     return BadRequest();
                 }
                 var result = await _categoryArticleService.SaveArticle(payload);
+                return Ok(Utils.Utils.NewSuccessResponse(result, null, null));
+
+
+            }
+            catch (ConflictException e)
+            {
+                return NotFound(Utils.Utils.NewErrorResponse(null, e.Message, Status.Conflict, (int)HttpStatusCode.Conflict));
+            }
+            catch (BadRequestException e)
+            {
+                return BadRequest(Utils.Utils.NewErrorResponse(null, e.Message, Status.BadRequestErr, (int)HttpStatusCode.BadRequest));
+            }
+            catch (Exception ex)
+            {
+                var isDuplicate = Utils.Errors.IsDuplicateError(ex);
+                if (isDuplicate)
+                {
+                    return Conflict(Utils.Utils.NewErrorResponse(null, null, Status.Conflict, (int)HttpStatusCode.Conflict));
+                }
+                return StatusCode((int)HttpStatusCode.InternalServerError, "Terjadi kesalahan pada sistem");
+            }
+        }
+
+        [HttpGet]
+        [Route("GetAllAuthor")]
+        [Authorize]
+        public async Task<IActionResult> GetAllAuthor()
+        {
+            try
+            {
+                var response = await _categoryArticleService.GetAllAuthor();
+                return Ok(Utils.Utils.NewSuccessResponse(response, null, null));
+            }
+            catch (NotFoundException e)
+            {
+                return NotFound(Utils.Utils.NewErrorResponse(null, e.Message, Status.NotFoundErr, (int)HttpStatusCode.NotFound));
+            }
+            catch (Exception)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, "Terjadi kesalahan pada sistem");
+            }
+        }
+
+        [HttpPost]
+        [Route("CreateAuthor")]
+        [Authorize]
+        public async Task<IActionResult> SaveAuthor([FromBody] CreateAuthorRequest request)
+        {
+            try
+            {
+                Author payload = _mapper.Map<Author>(request);
+                if (payload == null)
+                {
+                    return BadRequest();
+                }
+                var result = await _categoryArticleService.SaveAuthor(payload);
                 return Ok(Utils.Utils.NewSuccessResponse(result, null, null));
 
 

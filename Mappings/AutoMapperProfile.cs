@@ -8,6 +8,9 @@ namespace LDKProject.Mappings
         public AutoMapperProfile() {
             CreateMap<CategoryArticle, CreateCategoryArticleRequest>().ReverseMap();
             CreateMap<CreateCategoryArticleRequest, CategoryArticle>().ReverseMap();
+            CreateMap<CreateEventRequest, Event>().ReverseMap();
+            CreateMap<CreateArticleRequest, Article>().ReverseMap();
+            CreateMap<CreateAuthorRequest, Author>().ReverseMap();
 
 
         }

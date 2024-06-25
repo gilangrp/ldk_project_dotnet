@@ -56,6 +56,8 @@ builder.Services.AddSwaggerGen(opt =>
 
 builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
 builder.Services.AddScoped<IArticleService, ArticleService>();
+builder.Services.AddScoped<IEventRepository, EventRepository>();
+builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
 
