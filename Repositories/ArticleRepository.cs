@@ -2,6 +2,7 @@
 using LDKProject.Exceptions;
 using LDKProject.Models;
 using LDKProject.Models.Response;
+using LDKProject.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace LDKProject.Repositories;
@@ -16,6 +17,7 @@ public class ArticleRepository : IArticleRepository
         this.configuration = configuration;
         _appDbContext = appDbContext;
     }
+
     public async Task<IList<CategoryArticle>> GetAllCategoryArticle()
     {
         var items = await _appDbContext.CategoryArticle.ToListAsync();
@@ -26,6 +28,7 @@ public class ArticleRepository : IArticleRepository
 
         return items;
     }
+  
     public async Task<CategoryArticle> SaveCategoryArticle(CategoryArticle categoryArticle)
     {
         _appDbContext.CategoryArticle.Add(categoryArticle);

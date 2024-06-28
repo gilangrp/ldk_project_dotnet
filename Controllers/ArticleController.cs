@@ -19,14 +19,14 @@ namespace LDKProject.Controllers
     public class ArticleController : ControllerBase
     {
         private readonly ILogger<WeatherForecastController> _logger;
-        private readonly IArticleService _categoryArticleService;
+        private readonly IArticleService _articleService;
         private readonly IMapper _mapper;
 
         public ArticleController(ILogger<WeatherForecastController> logger,
-            IMapper mapper, IArticleService categoryArticleService)
+            IMapper mapper, IArticleService articleService)
         {
             _logger = logger;
-            _categoryArticleService = categoryArticleService;
+            _articleService = articleService;
             _mapper = mapper;
 
         }
@@ -38,7 +38,7 @@ namespace LDKProject.Controllers
         {
             try
             {
-                var article = await _categoryArticleService.GetAllCategoryArticle();
+                var article = await _articleService.GetAllCategoryArticle();
                 return Ok(Utils.Utils.NewSuccessResponse(article, null, null));
             }
             catch (NotFoundException e)
@@ -64,7 +64,7 @@ namespace LDKProject.Controllers
                 {
                     return BadRequest();
                 }
-                var result = await _categoryArticleService.SaveCategoryArticle(payload);
+                var result = await _articleService.SaveCategoryArticle(payload);
                 return Ok(Utils.Utils.NewSuccessResponse(result, null, null));
 
 
@@ -95,7 +95,7 @@ namespace LDKProject.Controllers
         {
             try
             {
-                var response = await _categoryArticleService.GetAllArticle();
+                var response = await _articleService.GetAllArticle();
                 return Ok(Utils.Utils.NewSuccessResponse(response, null, null));
             }
             catch (NotFoundException e)
@@ -120,7 +120,7 @@ namespace LDKProject.Controllers
                 {
                     return BadRequest();
                 }
-                var result = await _categoryArticleService.SaveArticle(payload);
+                var result = await _articleService.SaveArticle(payload);
                 return Ok(Utils.Utils.NewSuccessResponse(result, null, null));
 
 
@@ -151,7 +151,7 @@ namespace LDKProject.Controllers
         {
             try
             {
-                var response = await _categoryArticleService.GetAllAuthor();
+                var response = await _articleService.GetAllAuthor();
                 return Ok(Utils.Utils.NewSuccessResponse(response, null, null));
             }
             catch (NotFoundException e)
@@ -176,7 +176,7 @@ namespace LDKProject.Controllers
                 {
                     return BadRequest();
                 }
-                var result = await _categoryArticleService.SaveAuthor(payload);
+                var result = await _articleService.SaveAuthor(payload);
                 return Ok(Utils.Utils.NewSuccessResponse(result, null, null));
 
 

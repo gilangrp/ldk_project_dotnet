@@ -13,6 +13,7 @@ using LDKProject.Mappings;
 using LDKProject.Models.Response;
 using LDKProject.Utils;
 using LDKProject.Constants;
+using StackExchange.Redis;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -61,13 +62,8 @@ builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
 
-builder.Services.AddDbContext<AppDBContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("ldkProject"));
-    //options.UseInMemoryDatabase("ldkProject");
+builder.Services.AddDbContext<AppDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("ldkProject")));
 
-}
-);
 
 builder.Services.AddIdentityCore<IdentityUser>()
                 .AddRoles<IdentityRole>()
@@ -110,6 +106,17 @@ builder.Services.AddMvc().ConfigureApiBehaviorOptions(options =>
         return new BadRequestObjectResult(problems);
     };
 });
+
+// Configure Redis
+builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
+    ConnectionMultiplexer.Connect($"127.0.0.1:6379"));
+
+ConnectionMultiplexer _redis = ConnectionMultiplexer.Connect($"127.0.0.1:6379");
+var db = _redis.GetDatabase();
+db.StringGetSet("Nama", "Si Kasep");
+Console.WriteLine(db.StringGet("Nama"));
+
+
 
 var app = builder.Build();
 
